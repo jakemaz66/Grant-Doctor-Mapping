@@ -18,7 +18,8 @@ class AuthorDoctorEntityResolver():
         """
 
         #Initialize model in __init__
-        self.model = (self._initialize_xgb_model() if model_type == 'xgb')
+        self.model = (self._initialize_xgb_model() if model == 'xgb' 
+                      else self._initialize_random_forests())
         self.metadata = {}
         self.model_dir = model_dir
 

@@ -5,7 +5,8 @@ This project aims to match grants to doctors using a reusable classifier.
 
 ## Project Structure
 '.vscode/RePORTER_PRJ_C_FY2022.zip': Contains the data
- 'AuthorDoctorEntityResolver.py': Contains the resuable classifier class
+
+'AuthorDoctorEntityResolver.py': Contains the resuable classifier class
 
 ## Setup
 1. Clone the repository:

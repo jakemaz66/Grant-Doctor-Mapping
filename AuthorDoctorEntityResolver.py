@@ -18,7 +18,7 @@ class AuthorDoctorEntityResolver():
         """
 
         #Initialize model in __init__
-        self.model = model._initialize_xgb_model() if model == 'xgb':
+        self.model = (self._initialize_xgb_model() if model_type == 'xgb')
         self.metadata = {}
         self.model_dir = model_dir
 

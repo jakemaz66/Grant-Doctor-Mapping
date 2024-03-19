@@ -1,6 +1,6 @@
 import sqlalchemy
-from DUQ330BIGDATA.Week5 import npi_reader
-from DUQ330BIGDATA.Week2 import read_data_exp
+from grants_processing import read_grants_data
+from npi_processing import npi_reader
 
 
 def db():
@@ -55,7 +55,7 @@ def grants_csv_to_db(year: int):
     """
 
     #Reading in data
-    df = read_data_exp.read_grants_year(year)
+    df = read_grants_data.read_grants_year(year)
 
     #Subsetting to desired columns
     df = df[['last_name', 'forename', 'city', 'state', 'country']]

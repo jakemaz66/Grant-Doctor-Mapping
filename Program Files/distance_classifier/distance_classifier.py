@@ -4,11 +4,14 @@ import datetime
 import numpy
 import os
 import json
+import xgboost as xgb
+from sklearn.metrics import accuracy_score
+
 
 #Camel Case because it's a class
-class AuthorDoctorEntityResolver():
+class DistanceClassifier():
 
-    def __init__(self, model_dir, model):
+    def __init__(self, model_dir, model_type: str):
         """
         Constructor
 
@@ -18,8 +21,7 @@ class AuthorDoctorEntityResolver():
         """
 
         #Initialize model in __init__
-        self.model = (self._initialize_xgb_model() if model == 'xgb' 
-                      else self._initialize_random_forests())
+        self.model = self._initialize_xgb_model()
         self.metadata = {}
         self.model_dir = model_dir
 
@@ -36,16 +38,15 @@ class AuthorDoctorEntityResolver():
         #Test size can go down as training data goes up
         features, features_test, labels, labels_test = train_test_split(features, labels, test_size=0.2)
 
-        self.model.fit(features, labels)
+        #Guranteeing labels are floating point
+        self.model.fit(features, labels.astype(float))
 
-        self.metadata['training_date'] = datetime.datetime.now().strftime()('%y%m%d')
+        self.metadata['training_date'] = datetime.datetime.now().strftime('%Y%m%d')
         self.metadata['training_rows'] = len(labels)
 
-        self.metadata['accuracy'] = self.asses(features_test, labels_test)
+        self.metadata['accuracy'] = self.assess(features_test, labels_test)
 
-        
-
-    def predict(self, features: pd.DataFrame, proba: bool = False) -> numpy.ndarray:
+    def predict(self, features: pd.DataFrame, proba: bool = False):
         """
         Model predicts on the test_data
 
@@ -60,7 +61,8 @@ class AuthorDoctorEntityResolver():
             raise ValueError("Model must be trained first")
 
         if proba:
-             return self.model.predict_proba(features)[:, 0]
+            return self.model.predict_proba(features)[:, 0]
+        
         return self.model.predict(features)
     
     def save(self, file_name: str, overwrite: bool = False):
@@ -75,45 +77,41 @@ class AuthorDoctorEntityResolver():
         if len(self.metadata) == 0:
             raise ValueError("Model must be trained before saving")
         
-        now = datetime.datetime.now().strftime()('%y%m%d')
+        now = datetime.datetime.now().strftime('%Y%m%d')
         
         if file_name[:6] != now:
             filename = f'{now}_{file_name}'
 
         #Check for correct file suffix
-        if os.path.splittext(file_name)[1] != 'json':
+        if os.path.splitext(filename)[1] != '.json':
             file_name = file_name + '.json'
         
         #Pickle is dangerous because it depends on correct versioning
             
-        if not overwrite and (os.path.exists(path) or os.path.exists(metadata_path)):
-            raise FileExistsError("Cannot overwrite existing file")
-        
         path = os.path.join(self.model_dir, file_name)
-        metadata_path = os.path.splittext(path)[0] + '_metadata.json'
+        metadata_path = os.path.splitext(path)[0] + '_metadata.json'
+            
+        if not overwrite and (os.path.exists(path) or 
+                              os.path.exists(metadata_path)):
+            raise FileExistsError('Cannot overwrite existing file')
                             
         self.model.save_model(path)
 
-        with open(metadata_path) as fo:
+        with open(metadata_path, 'w') as fo:
             json.dump(self.metadata, fo)
 
-
     def load(self, file_name):
-        """
-        load in a model filename with associated metadata from model_dir
-
-        Args:
-        file_name: name of the model file
+        """Load in a model filename with associated metadata from 
+        model_dir
         """
 
         path = os.path.join(self.model_dir, file_name)
-        metadata_path = os.path.splittext(path)[0] + '_metadata.json'
-
+        metadata_path = os.path.splitext(path)[0] + '_metadata.json'
         self.model.load_model(path)
-        with open(metadata_path) as fo:
-            json.dump(self.metadata, fo)
-        
 
+        with open(metadata_path) as fr:
+            self.metadata = json.load(fr)
+        
     def assess(self, features, labels) -> float:
         """
         Returns the accuracy of the model
@@ -126,8 +124,18 @@ class AuthorDoctorEntityResolver():
         Accuracy of model chosen metric
         
         """
-
-        #Calculating Accuracy
         pred_labels = self.predict(features)
-        return ((pred_labels == labels).sum() / len(labels))
-    
+        binary_labels = []
+
+        #pred_labels returns probabilities in numpy array, using thresholds to make integer predictions
+        for i in pred_labels:
+            if i > 0.5:
+                binary_labels.append(1)
+            else:
+                binary_labels.append(0)
+
+        return accuracy_score(labels, binary_labels)
+
+    def _initialize_xgb_model(self):
+        """Create a new xgbclassifier"""
+        return xgb.XGBClassifier()

@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "duq330bigdata"
+name = "grant-doctor-mapping-1"
 version = "0.1.0"
 description = ""
 authors = ["jakem <mazurkiewiczj@duq.edu>"]
@@ -7,9 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.9"
-pandas = "^2.2.0"
-numpy = "^1.26.3"
-datetime = "^5.4"
+
 
 
 [build-system]

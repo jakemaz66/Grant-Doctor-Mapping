@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS npi_grants_bridge (
 '''
 
 #Connecting to database
-conn = sqlite3.connect('data/grant_npi.db')
+conn = sqlite3.connect(r'C:\Users\jakem\Grant-Doctor-Mapping-1\Program Files\data\grant_npi.db')
 cursor = conn.cursor()
 
 #Executing Queries

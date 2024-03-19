@@ -1,6 +1,6 @@
 import pandas as pd
-from grants_processing import read_grants_data
-from npi_processing import npi_reader
+from program_files.grants_processing import read_grants_data
+from program_files.npi_processing import npi_reader
 
 
 def read(path2: str) -> pd.DataFrame:

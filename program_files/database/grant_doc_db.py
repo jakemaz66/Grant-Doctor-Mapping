@@ -1,14 +1,15 @@
 import sqlalchemy
-from grants_processing import read_grants_data
-from npi_processing import npi_reader
+from program_files.grants_processing import read_grants_data
+from program_files.npi_processing import npi_reader
 
 
 def db():
     """
-    This function creates a sqlalchemy engine connection to the database
+    This function creates a SQLAlchemy engine connection to the database
     """
+    # Update the database URL with the correct path and use triple quotes for the string
     engine = sqlalchemy.create_engine(
-        'sqlite:///data/grant_npi.db'
+        'sqlite:///C:/Users/jakem/Grant-Doctor-Mapping-1/program_files/data/grant_npi.db'
     )
 
     conn = engine.connect()
@@ -83,5 +84,5 @@ def grants_csv_to_db(year: int):
 
 if __name__ == '__main__':
     
-    npi_csv_to_db(r"data\npidata_pfile_20240205-20240211.csv")
+    npi_csv_to_db(r"C:\Users\jakem\Grant-Doctor-Mapping-1\program_files\data\npidata_pfile_20240205-20240211.csv")
     grants_csv_to_db(2022)

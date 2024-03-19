@@ -6,9 +6,9 @@ from sentence_transformers import SentenceTransformer
 
 class NameDistance():
 
-    def __init__(self, ft_model_path: str = 'data/cc.en.50.bin'):
+    def __init__(self, ft_model_path: str = r'C:\Users\jakem\Grant-Doctor-Mapping-1\program_files\data\cc.en.50.bin'):
         #Loading fasttext model
-        self.ft_model = fasttext.load_model('data/cc.en.50.bin')
+        self.ft_model = fasttext.load_model(r'C:\Users\jakem\Grant-Doctor-Mapping-1\program_files\data\cc.en.50.bin')
 
     def combine_prediction_data(self, grants, npi) -> pd.DataFrame:
         grants = grants.iloc[0:100].add_prefix('grant_')

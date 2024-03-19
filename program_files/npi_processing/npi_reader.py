@@ -35,5 +35,5 @@ def read(path: str) -> pd.DataFrame:
     #There are 1,505 missing values for cert_date
 
 if __name__ == '__main__':
-    df = read(r"data/npidata_pfile_20240205-20240211.csv")
+    df = read(r"C:\Users\jakem\Grant-Doctor-Mapping-1\program_files\data\npidata_pfile_20240205-20240211.csv")
     print(df.head())

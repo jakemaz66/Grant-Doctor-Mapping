@@ -1,17 +1,45 @@
-# Grant Doctor Mapping 
+# Entity Resolution Project README
+
+## Table of Contents
+1. [Overview](#overview)
+2. [Tools Used](#tools-used)
+3. [Data Cleaning](#data-cleaning)
+4. [Classifier Building](#classifier-building)
+5. [Database Setup](#database-setup)
+6. [Training Data Simulation](#training-data-simulation)
+7. [Deployment](#deployment)
+8. [Usage](#usage)
+9. [Contributing](#contributing)
+10. [License](#license)
 
 ## Overview
-This project aims to match grants to doctors using a reusable classifier.
+This project focuses on entity resolution, specifically mapping grants to doctors from multiple datasets. The goal is to build a classifier that can predict matches between grants and doctors using various features such as the Jaro-Winkler distance between last names. The process involves reading in data, cleaning and preprocessing it, building and training a classifier, setting up a database to store connections, and deploying the classifier for matching purposes.
 
-## Project Structure
-'.vscode/RePORTER_PRJ_C_FY2022.zip': Contains the data
+## Tools Used
+- Python (programming language)
+- Pandas (data manipulation)
+- Scikit-learn (machine learning)
+- SQLite (database)
+- Jupyter Notebook (development environment)
+- Git (version control)
+- GitHub (code hosting and collaboration)
 
-'AuthorDoctorEntityResolver.py': Contains the resuable classifier class
+## Data Cleaning
+The data cleaning phase involves preprocessing both the grants and doctors datasets. Tasks include handling missing values, standardizing formats (e.g., names, dates), and extracting relevant features for matching purposes.
 
-## Setup
-1. Clone the repository:
-   ```bash
-   git clone git@github.com:jakemaz66/Grant-Doctor-Mapping.git
+## Classifier Building
+We built a classifier using machine learning techniques to predict matches between grants and doctors. Features such as Jaro-Winkler distance between last names, common affiliations, and grant types are used to train the classifier.
 
-## Notes
-The 'Budget_Start" column in the dataset is missing a considerable number of values. For each missing value in the Budget_Start Column, there is also a corresponidng missing value in that row for the Budget_End Column. I have decided to impute the missing Budget_Start column values with the median of the column in order to accound for an unclear distribution. 
+## Database Setup
+We set up an SQLite database to store our data and establish connections between grants and doctors. This database allows for efficient querying and retrieval of matched entities.
+
+## Training Data Simulation
+To train our classifier, we simulated training data by generating positive and negative samples of matched and unmatched pairs of grants and doctors. This simulated data helps improve the classifier's accuracy and generalization.
+
+## Deployment
+The trained classifier is deployed to perform real-time matching between grants and doctors. The deployment process ensures seamless integration with existing systems for efficient entity resolution.
+
+## Usage
+To use this project:
+1. Clone the repository: `git clone https://github.com/yourusername/entity-resolution-project.git`
+2. Install dependencies: `pip install -r requirements.txt`

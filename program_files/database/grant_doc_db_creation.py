@@ -48,7 +48,6 @@ cursor.execute(query)
 cursor.execute(query2)
 cursor.execute(query3)
 
-
 #Selecting Version
 version_query = 'select sqlite_version()'
 cursor.execute(version_query)

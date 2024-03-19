@@ -56,11 +56,12 @@ class StringDistanceFeatures():
 
 if __name__ == '__main__':
 
-    from DUQ330BIGDATA.Week2 import read_data_exp
-    from DUQ330BIGDATA.Week5 import npi_reader
+    from grants_processing import read_grants_data
+    from npi_processing import npi_reader
+
     
-    grants_df = read_data_exp.read_grants_year(2022)
-    npi_df = npi_reader.read(r'C:\Users\jakem\OneDrive\Documents\Visual Studio 2017\Duq330BigData\data\npidata_pfile_20240205-20240211.csv')
+    grants_df = read_grants_data.read_grants_year(2022)
+    npi_df = npi_reader.read(r'data\npidata_pfile_20240205-20240211.csv')
 
     sdf = StringDistanceFeatures()
     comb_df = sdf.combine_prediction_data(grants_df, npi_df)

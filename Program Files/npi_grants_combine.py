@@ -1,6 +1,6 @@
 import pandas as pd
-from DUQ330BIGDATA.Week2 import read_data_exp
-from DUQ330BIGDATA.Week5 import npi_reader
+from grants_processing import read_grants_data
+from npi_processing import npi_reader
 
 
 def read(path2: str) -> pd.DataFrame:
@@ -16,7 +16,7 @@ def read(path2: str) -> pd.DataFrame:
     """
 
     #Reading in the grants and npi data
-    df = read_data_exp.read_grants_year(2022)
+    df = read_grants_data.read_grants_year(2022)
     df2 = npi_reader.read(path2)
 
     #Selecting the matching columns

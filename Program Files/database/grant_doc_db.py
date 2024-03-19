@@ -83,5 +83,5 @@ def grants_csv_to_db(year: int):
 
 if __name__ == '__main__':
     
-    npi_csv_to_db(r"C:\Users\jakem\OneDrive\Documents\Visual Studio 2017\Duq330BigData\data\npidata_pfile_20240205-20240211.csv")
+    npi_csv_to_db(r"data\npidata_pfile_20240205-20240211.csv")
     grants_csv_to_db(2022)

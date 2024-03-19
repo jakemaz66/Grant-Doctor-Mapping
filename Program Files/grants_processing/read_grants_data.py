@@ -74,8 +74,6 @@ class GrantsData:
         return df
 
 
-
-
 def read_grants_year(year) -> pd.DataFrame:
     """Read in Grants Data for a year and return as clean dataframe
 
@@ -86,7 +84,7 @@ def read_grants_year(year) -> pd.DataFrame:
         pd.DataFrame: clean dataframe of grants data
     """
     # We know the filename is: RePORTER_PRJ_C_FY2022.zip
-    path = r'C:\Users\jakem\OneDrive\Documents\Visual Studio 2017\Duq330BigData\data\RePORTER_PRJ_C_FY2022.zip'
+    path = r'data\RePORTER_PRJ_C_FY2022.zip'
     gd = GrantsData(path.format(year=year))
     return gd.read()
 
@@ -103,4 +101,3 @@ if __name__ == '__main__':
     
 
     
-    # gd = GrantsData()

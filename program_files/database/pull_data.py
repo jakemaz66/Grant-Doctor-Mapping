@@ -63,10 +63,12 @@ def extract_data_from_bridge(database):
 
     #Defining my Queries
     query = '''
-    SELECT *
+    SELECT 
+        npi.forename AS npi_forename, npi.lastname AS npi_lastname, npi.city AS npi_city, npi.state AS npi_state, npi.country AS npi_country,
+        grants.forename AS grants_forename, grants.lastname AS grants_lastname, grants.city AS grants_city, grants.state AS grants_state, grants.country AS grants_country
     FROM npi
-    JOIN npi_grants_combine ON npi.id = npi_grants_combine.id
-    JOIN grants ON grants.id = npi_grants_combine.id;
+    INNER JOIN npi_grants_bridge ON npi.id = npi_grants_bridge.npi_id
+    INNER JOIN grants ON npi_grants_bridge.grants_id = grants.id
 
     '''
 
@@ -79,9 +81,9 @@ def extract_data_from_bridge(database):
     results_combine = cursor.fetchall()  
  
 
-    df_both = pd.DataFrame(results_combine, columns=['id_npi', 'last_name_npi', 'forename_npi', 'city_npi', 'state_npi', 'country_npi', 'created_at_npi',
-                                                    'id_grants', 'last_name_grants', 'forename_grants', 'city_grants', 
-                                                    'state_grants', 'country_grants', 'created_at_grants'])
+    df_both = pd.DataFrame(results_combine, columns=['forename_npi', 'last_name_npi', 'city_npi', 'state_npi', 'country_npi', 
+                                                    'forename_grants', 'last_name_grants', 'city_grants', 
+                                                    'state_grants', 'country_grants'])
 
     #Selecting the matching columns
     df = df_both[['forename_npi', 'last_name_npi', 'city_npi', 'state_npi', 'country_npi']]
@@ -89,19 +91,19 @@ def extract_data_from_bridge(database):
 
     #Adding prefixes onto the column names
     mapper = {
-            'forename': 'grant_forename',
-            'last_name': 'grant_last_name',
-            'city': 'grant_city',
-            'state': 'grant_state',
-            'country': 'grant_country',
+            'forename_npi': 'grant_forename',
+            'last_name_npi': 'grant_last_name',
+            'city_npi': 'grant_city',
+            'state_npi': 'grant_state',
+            'country_npi': 'grant_country',
         }
 
     mapper2 = {
-            'forename': 'npi_forename',
-            'last_name': 'npi_last_name',
-            'city': 'npi_city',
-            'state': 'npi_state',
-            'country': 'npi_country',
+            'forename_grants': 'npi_forename',
+            'last_name_grants': 'npi_last_name',
+            'city_grants': 'npi_city',
+            'state_grants': 'npi_state',
+            'country_grants': 'npi_country',
         }
 
 
@@ -115,4 +117,7 @@ def extract_data_from_bridge(database):
 
 if __name__ == '__main__':
     df = extract_data(r'C:\Users\jakem\Grant-Doctor-Mapping-1\program_files\data\grant_npi.db')
+
+    df_combine = extract_data_from_bridge(r'C:\Users\jakem\Grant-Doctor-Mapping-1\program_files\data\grant_npi.db')
+    df
 

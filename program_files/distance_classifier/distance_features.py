@@ -5,14 +5,18 @@ import pandas as pd
 
 
 class StringDistanceFeatures():
+
     def __init__(self, ft_model_path: str = 'data/cc.en.50.bin'):
+        #Intializing fastext model
         self.ft_model = fasttext.load_model(ft_model_path)
 
     def combine_prediction_data(self, grants: pd.DataFrame, npi: pd.DataFrame) -> pd.DataFrame:
+
         """Combine grants and npi dataframes into pairs"""
 
         grants = grants.iloc[0:100].add_prefix('grant_')
         npi = npi.iloc[0:100].add_prefix('npi_')
+
         grants['merge_val'] = 1
         npi['merge_val'] = 1
 
@@ -30,6 +34,7 @@ class StringDistanceFeatures():
 
         data_cols = df.columns
 
+        #Calculating Distance Features
         df['jw_dist_last'] = df.apply(lambda row: 
                                  jarowinkler.jaro_similarity(row['grant_last_name'],
                                                             row['npi_last_name']), axis = 1)
@@ -41,6 +46,7 @@ class StringDistanceFeatures():
         df['match_state'] = df.apply(lambda row: 
                                     (row['grant_state'] == row['npi_state']), axis = 1)
         
+        #Applying fast text vectors to all columns
         for dataset in ['grant', 'npi']:
             for col in ['last_name', 'forename']:
                 df[f'vec_{dataset}_{col}'] = df[f'{dataset}_{col}'].apply(
@@ -50,6 +56,7 @@ class StringDistanceFeatures():
         df['ft_dist_last_name'] = df.apply(lambda row: np.linalg.norm((row['vec_grant_last_name']) - row['vec_npi_last_name']),
                                             axis = 1)
         
+        #Returning Featurs
         return df.drop(columns=data_cols).drop(columns=[
             v for v in df.columns if 'vec' in v])
 
@@ -66,4 +73,3 @@ if __name__ == '__main__':
     sdf = StringDistanceFeatures()
     comb_df = sdf.combine_prediction_data(grants_df, npi_df)
     features = sdf.features_from_pairs(comb_df)
-    print(features)

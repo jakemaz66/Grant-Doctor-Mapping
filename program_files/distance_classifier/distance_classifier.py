@@ -8,7 +8,6 @@ import xgboost as xgb
 from sklearn.metrics import accuracy_score
 
 
-#Camel Case because it's a class
 class DistanceClassifier():
 
     def __init__(self, model_dir, model_type: str):

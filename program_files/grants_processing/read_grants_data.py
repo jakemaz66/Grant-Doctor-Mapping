@@ -23,8 +23,6 @@ class GrantsData:
     @staticmethod
     def _select_columns(df: pd.DataFrame) -> pd.DataFrame:
         """Rename and select columns
-        NOTE: Underscored methods are "private methods", otherwise 
-        meaning that we should only call them from WITHIN the class.
 
         Args:
             df (pd.DataFrame): dataframe
@@ -69,6 +67,7 @@ class GrantsData:
         # Impute missing values in 'PROJECT_START' and 'PROJECT_END' with the mode. I did this because for all dates missing in this column
         # There are also dates missing in the budget_end column, so imputing with the most frequent date will most likely capture the 
         # Pattern. Budgets may typically start on a certain date as well, and choosing the mode would capture this.
+
         df['budget_start'].fillna(start_mode, inplace=True)
 
         return df
@@ -83,13 +82,13 @@ def read_grants_year(year) -> pd.DataFrame:
     Returns:
         pd.DataFrame: clean dataframe of grants data
     """
-    # We know the filename is: RePORTER_PRJ_C_FY2022.zip
     path = r'C:\Users\jakem\Grant-Doctor-Mapping-1\program_files\data\RePORTER_PRJ_C_FY2022.zip'
     gd = GrantsData(path.format(year=year))
     return gd.read()
 
 
 if __name__ == '__main__':
+    
     import numpy as np
     # '/mnt/search/data/grants/RePORTER_PRJ_C_FY2022.zip'
 

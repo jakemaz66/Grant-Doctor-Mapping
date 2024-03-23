@@ -3,6 +3,10 @@ import pandas as pd
 
 
 def extract_data(database):
+    '''
+    This function creates training data for the distance_classifier by pulling data from the grant_npi database,
+    using the npi and grants table
+    '''
 
     #Defining my Queries
     query = '''
@@ -24,6 +28,7 @@ def extract_data(database):
     cursor.execute(query2)
     results_grants = cursor.fetchall()  
 
+    #Creating separate dataframes
     df_npi = pd.DataFrame(results_npi, columns=['id', 'last_name', 'forename', 'city', 'state', 'country', 'created_at'])
     df_grants = pd.DataFrame(results_grants, columns=['id', 'last_name', 'forename', 'city', 'state', 'country', 'created_at'])
 
@@ -56,10 +61,13 @@ def extract_data(database):
     df_final = pd.concat([df, df2], axis=1)
     return df_final
 
-    cursor.close()
-    conn.close()
 
 def extract_data_from_bridge(database):
+
+    '''
+    This function creates training data for the distance_classifier by pulling data from the grant_npi database,
+    using the npi_grants_bridge bridge table as a way to increase likelihood of matches
+    '''
 
     #Defining my Queries
     query = '''
@@ -80,12 +88,12 @@ def extract_data_from_bridge(database):
     cursor.execute(query)
     results_combine = cursor.fetchall()  
  
-
+    #Creating a large dataframe of npi and grants data
     df_both = pd.DataFrame(results_combine, columns=['forename_npi', 'last_name_npi', 'city_npi', 'state_npi', 'country_npi', 
                                                     'forename_grants', 'last_name_grants', 'city_grants', 
                                                     'state_grants', 'country_grants'])
 
-    #Selecting the matching columns
+    #Selecting the matching columns and splitting data
     df = df_both[['forename_npi', 'last_name_npi', 'city_npi', 'state_npi', 'country_npi']]
     df2 = df_both[['forename_grants', 'last_name_grants', 'city_grants', 'state_grants', 'country_grants']]
 
@@ -119,5 +127,5 @@ if __name__ == '__main__':
     df = extract_data(r'C:\Users\jakem\Grant-Doctor-Mapping-1\program_files\data\grant_npi.db')
 
     df_combine = extract_data_from_bridge(r'C:\Users\jakem\Grant-Doctor-Mapping-1\program_files\data\grant_npi.db')
-    df
+
 

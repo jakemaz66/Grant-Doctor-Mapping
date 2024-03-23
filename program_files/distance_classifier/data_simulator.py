@@ -2,6 +2,10 @@ import pandas as pd
 
 
 def create_simulated_data():
+    '''
+    This function simulates training data for the distance classifier
+    '''
+    
     #Creating simulated dataframe
     df = pd.DataFrame(columns=['grant_forename',
                            'grant_last_name',

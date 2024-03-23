@@ -36,4 +36,4 @@ def read(path: str) -> pd.DataFrame:
 
 if __name__ == '__main__':
     df = read(r"C:\Users\jakem\Grant-Doctor-Mapping-1\program_files\data\npidata_pfile_20240205-20240211.csv")
-    print(df.head())
+ 

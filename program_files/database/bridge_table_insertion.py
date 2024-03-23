@@ -1,8 +1,10 @@
 import sqlite3
 
+#Connecting to Database
 conn = sqlite3.connect(r'C:\Users\jakem\Grant-Doctor-Mapping-1\program_files\data\grant_npi.db')
 cursor = conn.cursor()
 
+#Defining query
 sql_query = """
     INSERT INTO npi_grants_bridge (npi_id, grants_id)
     SELECT npi.id AS npi_id, grants.id AS grants_id
@@ -14,8 +16,8 @@ sql_query = """
     LIMIT 50000;
 """
 
+#Executing Queries and closing connection
 cursor.execute(sql_query)
 conn.commit()
-
 
 conn.close()

@@ -51,4 +51,3 @@ def read(path2: str) -> pd.DataFrame:
 
 if __name__ == '__main__':
     df = read( r"data/npidata_pfile_20240205-20240211.csv")
-    print(df.head())

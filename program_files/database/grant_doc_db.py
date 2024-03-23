@@ -16,6 +16,7 @@ def db():
 
     return conn
 
+
 def npi_csv_to_db(csv_path: str):
     """
     This function creates a relational database out of the npi csv dataset
@@ -49,6 +50,7 @@ def npi_csv_to_db(csv_path: str):
               #method = 'multi'
               #chunksize=1000
               )
+    
     
 def grants_csv_to_db(year: int):
     """
